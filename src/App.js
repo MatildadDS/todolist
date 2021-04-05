@@ -15,19 +15,28 @@ function App() {
   const [task, setTask] = useState();
   const [txt, setTxt] = useState();
 
-  function creationCarte(e){
+  function creationCard(e){
     e.preventDefault();
     //console.log(task, txt);
 
     const newArray = [...myState, {task: task, txt:txt}]
     setMyState(newArray);
     console.log(newArray);
+    setTask('');
+    setTxt('');
 
   }
 
-  console.log(myState.map((todo, index) =>(
-    <Card />
-  )));
+  function deleteCard(index){
+
+    const cleanArr = [...myState];
+
+    //console.log(index);
+    //console.log(cleanArr.filter(item => cleanArr.indexOf(item) !== cleanArr.indexOf(cleanArr[index])));
+
+    setMyState(cleanArr.filter(item => cleanArr.indexOf(item) !== cleanArr.indexOf(cleanArr[index])))
+  }
+  
 
   return (
     <div>
@@ -36,19 +45,19 @@ function App() {
 
         <h2 className="title mt-5"> Enter your tasks here</h2>
 
-        <form onSubmit={creationCarte}>
+        <form onSubmit={creationCard}>
 
           <div className="field">
             <div className="control">
               <label htmlFor="task" className="label">Task</label>
               <input
+                value= {task}
                 className="input"
                 type="text"
                 id="task"
                 placeholder="Task to do" 
                 onChange={e => setTask(e.target.value)}
                 />
-
             </div>
           </div>
 
@@ -56,6 +65,7 @@ function App() {
             <div className="control">
               <label htmlFor="txt" className="label">Details</label>
               <textarea
+              value= {txt}
                 className="input"
                 type="text"
                 id="txt"
@@ -76,8 +86,10 @@ function App() {
         myState.map((todo, index) =>(
           <Card 
           key = {index}
+          index = {index}
           task = {todo.task} 
           txt = {todo.txt}
+          deleteFunc = {deleteCard}
           />
         ))
       }
